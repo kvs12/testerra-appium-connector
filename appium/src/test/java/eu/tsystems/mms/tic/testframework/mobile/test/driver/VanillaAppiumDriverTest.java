@@ -25,8 +25,11 @@ package eu.tsystems.mms.tic.testframework.mobile.test.driver;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.mobile.test.AbstractAppiumTest;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.TimerWrapper;
 import eu.tsystems.mms.tic.testframework.report.Report;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
+import eu.tsystems.mms.tic.testframework.transfer.ThrowablePackedResponse;
+import eu.tsystems.mms.tic.testframework.utils.Timer;
 import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
 import eu.tsystems.mms.tic.testframework.utils.UITestUtils;
 import io.appium.java_client.android.AndroidDriver;
@@ -86,7 +89,14 @@ public class VanillaAppiumDriverTest extends AbstractAppiumTest implements Logga
             ExpectedCondition<WebElement> q = ExpectedConditions.presenceOfElementLocated(By.xpath("//input[@name='q']"));
             return q;
         });
-        TimerUtils.sleep(2000);
+        TimerWrapper tw = new TimerWrapper(1000, 60, driver);
+        ThrowablePackedResponse<Object> response = tw.executeSequence(new Timer.Sequence<Object>() {
+            @Override
+            public void run() throws Throwable {
+                driver.getTitle();
+            }
+        });
+        log().info("{}", response.isSuccessful());
 
         File screenshotAs = driver.getScreenshotAs(OutputType.FILE);
         TesterraListener.getReport().provideScreenshot(screenshotAs, Report.FileMode.MOVE);
