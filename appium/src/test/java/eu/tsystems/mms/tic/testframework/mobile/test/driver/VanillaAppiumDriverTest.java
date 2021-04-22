@@ -93,6 +93,7 @@ public class VanillaAppiumDriverTest extends AbstractAppiumTest implements Logga
         ThrowablePackedResponse<Object> response = tw.executeSequence(new Timer.Sequence<Object>() {
             @Override
             public void run() throws Throwable {
+                driver.getTitle();
                 setPassState(false);
                 setSkipThrowingException(true);
             }
