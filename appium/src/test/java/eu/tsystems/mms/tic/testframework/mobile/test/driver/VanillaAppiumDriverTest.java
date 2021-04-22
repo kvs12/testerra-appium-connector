@@ -94,9 +94,10 @@ public class VanillaAppiumDriverTest extends AbstractAppiumTest implements Logga
             @Override
             public void run() throws Throwable {
                 driver.getTitle();
+                setPassState(false);
             }
         });
-        log().info("{}", response.isSuccessful());
+        log().info("Timed out: {}", response.hasTimeoutException());
 
         File screenshotAs = driver.getScreenshotAs(OutputType.FILE);
         TesterraListener.getReport().provideScreenshot(screenshotAs, Report.FileMode.MOVE);
