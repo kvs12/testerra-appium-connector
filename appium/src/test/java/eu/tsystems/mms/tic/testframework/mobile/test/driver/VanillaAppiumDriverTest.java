@@ -27,6 +27,8 @@ import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.mobile.test.AbstractAppiumTest;
 import eu.tsystems.mms.tic.testframework.report.Report;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
+import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
+import eu.tsystems.mms.tic.testframework.utils.UITestUtils;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.AndroidElement;
 import io.appium.java_client.remote.MobileBrowserType;
@@ -84,11 +86,13 @@ public class VanillaAppiumDriverTest extends AbstractAppiumTest implements Logga
             ExpectedCondition<WebElement> q = ExpectedConditions.presenceOfElementLocated(By.xpath("//input[@name='q']"));
             return q;
         });
+        TimerUtils.sleep(2000);
 
         File screenshotAs = driver.getScreenshotAs(OutputType.FILE);
         TesterraListener.getReport().provideScreenshot(screenshotAs, Report.FileMode.MOVE);
         WebElement searchBar = driver.findElement(By.xpath("//input[@name='q']"));
         searchBar.sendKeys("Experitest");
+        TimerUtils.sleep(2000);
     }
 
     @AfterMethod
